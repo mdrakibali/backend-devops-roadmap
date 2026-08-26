@@ -2,7 +2,7 @@ import { AppStateData, ItemProgress, TechMasteryProgress, ProjectProgress } from
 import { ROADMAP_PHASES, SELF_ASSESSMENT_TECHNOLOGIES } from '../data/roadmapData';
 import { PRODUCTION_PROJECTS } from '../data/projectsData';
 
-const STORAGE_KEY = 'backend_devops_mastery_clean_v3';
+const STORAGE_KEY = 'backend_devops_mastery_v4_clean';
 
 export interface IStorageRepository {
   loadState(): AppStateData;
@@ -18,7 +18,7 @@ export function getInitialDefaultState(): AppStateData {
   const projects: Record<string, ProjectProgress> = {};
   const now = new Date().toISOString();
 
-  // Populate all roadmap items in clean uncompleted (not_started) state
+  // Populate all roadmap items strictly in not_started (0% progress) state
   ROADMAP_PHASES.forEach(phase => {
     phase.technologies.forEach(tech => {
       tech.levels.forEach(level => {
@@ -35,7 +35,7 @@ export function getInitialDefaultState(): AppStateData {
     });
   });
 
-  // Initialize self assessment technologies
+  // Initialize self assessment technologies in clean state
   SELF_ASSESSMENT_TECHNOLOGIES.forEach(techName => {
     techMastery[techName] = {
       technologyId: techName,
@@ -51,7 +51,7 @@ export function getInitialDefaultState(): AppStateData {
     };
   });
 
-  // Initialize projects in clean not_started state
+  // Initialize projects strictly in not_started state
   PRODUCTION_PROJECTS.forEach(project => {
     projects[project.id] = {
       projectId: project.id,
@@ -62,7 +62,7 @@ export function getInitialDefaultState(): AppStateData {
   });
 
   return {
-    version: '3.0.0',
+    version: '4.0.0',
     items,
     techMastery,
     projects,
@@ -83,8 +83,12 @@ export class LocalStorageRepository implements IStorageRepository {
     }
     try {
       // Clear legacy storage keys
-      localStorage.removeItem('backend_devops_mastery_state_v1');
-      localStorage.removeItem('backend_devops_mastery_state_v2');
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('backend_devops_') && key !== STORAGE_KEY) {
+          localStorage.removeItem(key);
+        }
+      }
 
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) {
@@ -93,6 +97,12 @@ export class LocalStorageRepository implements IStorageRepository {
         return defaultState;
       }
       const parsed = JSON.parse(raw);
+      if (!parsed || parsed.version !== '4.0.0' || !parsed.items) {
+        const defaultState = getInitialDefaultState();
+        this.saveState(defaultState);
+        return defaultState;
+      }
+
       const base = getInitialDefaultState();
       return {
         ...base,

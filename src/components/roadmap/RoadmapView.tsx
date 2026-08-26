@@ -18,7 +18,8 @@ import {
   AlertTriangle,
   FileCode2,
   SlidersHorizontal,
-  ChevronUp
+  ChevronUp,
+  RotateCcw
 } from 'lucide-react';
 
 export const RoadmapView: React.FC = () => {
@@ -27,7 +28,8 @@ export const RoadmapView: React.FC = () => {
     selectedPhaseIdFilter,
     setSelectedPhaseIdFilter,
     phaseStats,
-    overallProgressPercent
+    overallProgressPercent,
+    resetAllProgress
   } = useRoadmap();
 
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>('all');
@@ -136,7 +138,7 @@ export const RoadmapView: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={expandAll}
               className="px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 text-xs font-mono text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
@@ -148,6 +150,18 @@ export const RoadmapView: React.FC = () => {
               className="px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 text-xs font-mono text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
             >
               Collapse All
+            </button>
+            <button
+              onClick={() => {
+                if (window.confirm('Reset all progress to 0%?')) {
+                  resetAllProgress();
+                }
+              }}
+              className="px-2.5 py-1.5 rounded-lg border border-red-200 dark:border-red-950/60 text-xs font-mono text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 flex items-center gap-1.5"
+              title="Reset all completed items to 0%"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset 0%</span>
             </button>
           </div>
         </div>
