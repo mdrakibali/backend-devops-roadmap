@@ -1,15 +1,8 @@
 import React from 'react';
 import { useRoadmap, TabId } from '../../context/RoadmapContext';
 import {
-  LayoutDashboard,
   Terminal,
-  CalendarCheck2,
-  Clock,
-  CheckCircle2,
-  ListFilter,
   FolderGit2,
-  Award,
-  Settings,
   X,
   Flame,
   Binary
@@ -41,15 +34,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onCloseMobile }) =
   } = useRoadmap();
 
   const navItems: NavItem[] = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'roadmap', label: 'All Roadmap', icon: Terminal, badge: totalItemsCount },
-    { id: 'today', label: 'Today', icon: CalendarCheck2, badge: todayStats.remainingToday > 0 ? `${todayStats.remainingToday} left` : undefined },
-    { id: 'in-progress', label: 'In Progress', icon: Clock, badge: inProgressItemsCount },
-    { id: 'completed', label: 'Completed', icon: CheckCircle2, badge: completedItemsCount },
-    { id: 'remaining', label: 'Remaining', icon: ListFilter, badge: remainingItemsCount },
-    { id: 'projects', label: 'Projects', icon: FolderGit2, badge: '6 Capstones' },
-    { id: 'assessment', label: 'Self Assessment', icon: Award },
-    { id: 'settings', label: 'Settings', icon: Settings }
+    { id: 'roadmap', label: 'Roadmap', icon: Terminal, badge: `${completedItemsCount}/${totalItemsCount}` },
+    { id: 'projects', label: 'Projects', icon: FolderGit2, badge: '6 Capstones' }
   ];
 
   const handleSelectTab = (tab: TabId) => {
@@ -148,7 +134,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onCloseMobile }) =
   return (
     <>
       {/* Desktop Fixed Sidebar */}
-      <aside className="hidden lg:block w-64 xl:w-72 h-screen sticky top-0 flex-shrink-0">
+      <aside className="hidden lg:flex flex-col w-64 xl:w-72 h-full flex-shrink-0">
         {sidebarContent}
       </aside>
 

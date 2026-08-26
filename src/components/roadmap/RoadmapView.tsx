@@ -109,11 +109,18 @@ export const RoadmapView: React.FC = () => {
         }).filter(lvl => lvl.items.length > 0);
 
         return { ...tech, levels: filteredLevels };
-      }).filter(tech => tech.levels.length > 0 || localSearchQuery.trim() === '');
+      }).filter(tech => tech.levels.length > 0);
 
       return { ...phase, technologies: filteredTechs };
-    });
+    }).filter(phase => phase.technologies.length > 0 || (!localSearchQuery.trim() && selectedStatusFilter === 'all' && selectedLevelFilter === 'all'));
   }, [selectedPhaseIdFilter, selectedLevelFilter, selectedStatusFilter, localSearchQuery, state.items]);
+
+  const isFiltering = Boolean(
+    localSearchQuery.trim().length > 0 ||
+    selectedStatusFilter !== 'all' ||
+    selectedLevelFilter !== 'all' ||
+    selectedPhaseIdFilter !== null
+  );
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-16">
@@ -224,7 +231,7 @@ export const RoadmapView: React.FC = () => {
       <div className="space-y-6">
         {filteredPhases.map(phase => {
           const stats = phaseStats[phase.id] || { total: 0, completed: 0, inProgress: 0, percent: 0 };
-          const isExpanded = expandedPhases[phase.id] ?? true;
+          const isExpanded = isFiltering ? true : (expandedPhases[phase.id] ?? true);
 
           return (
             <div

@@ -12,15 +12,8 @@ import { PRODUCTION_PROJECTS } from '../data/projectsData';
 import { storageRepository } from '../repositories/storageRepository';
 
 export type TabId =
-  | 'dashboard'
   | 'roadmap'
-  | 'today'
-  | 'in-progress'
-  | 'completed'
-  | 'remaining'
-  | 'projects'
-  | 'assessment'
-  | 'settings';
+  | 'projects';
 
 interface ToastMessage {
   id: string;
@@ -85,7 +78,10 @@ const RoadmapContext = createContext<RoadmapContextType | undefined>(undefined);
 
 export const RoadmapProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, setState] = useState<AppStateData>(() => storageRepository.loadState());
-  const [activeTab, setActiveTabState] = useState<TabId>('dashboard');
+  const [activeTab, setActiveTabState] = useState<TabId>(() => {
+    const saved = storageRepository.loadState()?.lastActiveTab as TabId;
+    return saved === 'projects' ? 'projects' : 'roadmap';
+  });
   const [selectedPhaseIdFilter, setSelectedPhaseIdFilter] = useState<string | null>(null);
   const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');

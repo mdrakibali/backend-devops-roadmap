@@ -7,14 +7,7 @@ import {
   Moon,
   Shield,
   Terminal,
-  Layers,
-  Calendar,
-  Clock,
-  CheckCircle2,
-  ListTodo,
-  FolderGit2,
-  Award,
-  Settings
+  FolderGit2
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -22,15 +15,8 @@ interface HeaderProps {
 }
 
 const TAB_TITLES: Record<TabId, { title: string; icon: React.ComponentType<{ className?: string }> }> = {
-  dashboard: { title: 'Engineering Dashboard', icon: Layers },
-  roadmap: { title: 'Master Roadmap', icon: Terminal },
-  today: { title: "Today's Study Session", icon: Calendar },
-  'in-progress': { title: 'In Progress Topics', icon: Clock },
-  completed: { title: 'Completed Mastery Archive', icon: CheckCircle2 },
-  remaining: { title: 'Remaining Curriculum', icon: ListTodo },
-  projects: { title: 'Production Projects Ladder', icon: FolderGit2 },
-  assessment: { title: 'Technology Self-Assessment', icon: Award },
-  settings: { title: 'System Settings & Data', icon: Settings }
+  roadmap: { title: 'Master Roadmap Tracker', icon: Terminal },
+  projects: { title: 'Production Capstones & Projects', icon: FolderGit2 }
 };
 
 export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu }) => {
@@ -43,7 +29,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu }) => {
     overallProgressPercent
   } = useRoadmap();
 
-  const currentTabInfo = TAB_TITLES[activeTab] || { title: 'Dashboard', icon: Layers };
+  const currentTabInfo = TAB_TITLES[activeTab] || { title: 'Master Roadmap', icon: Terminal };
   const IconComponent = currentTabInfo.icon;
 
   return (
