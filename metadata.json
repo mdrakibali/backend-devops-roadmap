@@ -1,0 +1,6 @@
+{
+  "name": "Backend + DevOps Mastery Tracker",
+  "description": "Personal engineering mastery roadmap dashboard and tracker for Backend and DevOps systems.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
