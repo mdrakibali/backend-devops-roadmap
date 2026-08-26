@@ -15,7 +15,8 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onOpenNotes }) => {
     toggleItemCompleted,
     setItemStatus,
     setItemMastery,
-    toggleTodayFocus
+    toggleTodayFocus,
+    t
   } = useRoadmap();
 
   const progress = state.items[item.id];
@@ -54,7 +55,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onOpenNotes }) => {
                 ? 'bg-black dark:bg-white text-white dark:text-black border-black dark:border-white'
                 : 'border-neutral-400 dark:border-neutral-600 hover:border-black dark:hover:border-white bg-transparent'
             }`}
-            title={isCompleted ? 'Mark uncompleted' : 'Mark as Completed'}
+            title={isCompleted ? t.markUncompleted : t.markCompleted}
             aria-label={`Toggle completion for ${item.title}`}
           >
             {isCompleted && <Check className="w-3.5 h-3.5 stroke-[3]" />}

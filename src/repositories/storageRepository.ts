@@ -72,6 +72,7 @@ export function getInitialDefaultState(): AppStateData {
     isTimerRunning: false,
     aiFreeModeActive: false,
     theme: 'dark',
+    language: 'en',
     lastActiveTab: 'roadmap'
   };
 }

@@ -24,7 +24,8 @@ export const ProjectsView: React.FC = () => {
     state,
     toggleProjectChecklist,
     setProjectStatus,
-    setProjectNotes
+    setProjectNotes,
+    t
   } = useRoadmap();
 
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({
@@ -66,23 +67,23 @@ export const ProjectsView: React.FC = () => {
           <div>
             <div className="flex items-center gap-2">
               <Badge variant="filled" size="sm">
-                PRODUCTION CAPSTONES
+                {t.capstonesBadge}
               </Badge>
               <span className="text-xs font-mono text-neutral-500 font-bold">
-                {completedProjectsCount} of 6 Completed
+                {completedProjectsCount} of 6 {t.completed}
               </span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white tracking-tight mt-1">
-              Production Projects Ladder
+              {t.projectsTitle}
             </h2>
             <p className="text-xs text-neutral-500 dark:text-neutral-400 font-mono mt-0.5 max-w-2xl">
-              "Theory without building is illusion. These 6 projects prove production mastery from single service to distributed Kubernetes platforms."
+              {t.projectsSubtitle}
             </p>
           </div>
 
           <div className="w-full sm:w-64 p-3.5 rounded-lg bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 flex-shrink-0">
             <div className="flex justify-between text-xs font-mono mb-1.5">
-              <span className="text-neutral-500">Capstone Ladder</span>
+              <span className="text-neutral-500">{t.progress}</span>
               <span className="font-bold text-black dark:text-white">
                 {Math.round((completedProjectsCount / 6) * 100)}%
               </span>
@@ -145,7 +146,7 @@ export const ProjectsView: React.FC = () => {
                         variant={isDone ? 'filled' : isInProgress ? 'default' : 'subtle'}
                         size="sm"
                       >
-                        {isDone ? 'COMPLETED' : isInProgress ? 'IN PROGRESS' : 'NOT STARTED'}
+                        {isDone ? t.completed.toUpperCase() : isInProgress ? t.inProgress.toUpperCase() : t.notStarted.toUpperCase()}
                       </Badge>
                     </div>
                     <p className="text-xs font-mono text-neutral-500 mt-1">
@@ -172,9 +173,9 @@ export const ProjectsView: React.FC = () => {
                       onChange={e => setProjectStatus(project.id, e.target.value as any)}
                       className="text-xs font-mono p-1.5 rounded-md border border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white focus:outline-hidden"
                     >
-                      <option value="not_started">Not Started</option>
-                      <option value="in_progress">In Progress</option>
-                      <option value="completed">Completed</option>
+                      <option value="not_started">{t.notStarted}</option>
+                      <option value="in_progress">{t.inProgress}</option>
+                      <option value="completed">{t.completed}</option>
                     </select>
                   </div>
                 </div>
@@ -189,7 +190,7 @@ export const ProjectsView: React.FC = () => {
                       {project.description}
                     </p>
                     <div className="flex items-center gap-2 flex-wrap pt-1">
-                      <span className="text-xs font-mono text-neutral-500 uppercase">Core Stack:</span>
+                      <span className="text-xs font-mono text-neutral-500 uppercase">{t.coreStack}:</span>
                       {project.stack.map(tech => (
                         <Badge key={tech} variant="outline" size="sm">
                           {tech}
@@ -203,7 +204,7 @@ export const ProjectsView: React.FC = () => {
                     <div className="space-y-2">
                       <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-neutral-700 dark:text-neutral-300">
                         <FileCode2 className="w-4 h-4" />
-                        <span>System Architecture Blueprint</span>
+                        <span>{t.architecture}</span>
                       </div>
                       <div className="p-4 rounded-xl bg-black text-white dark:bg-black dark:text-white border border-neutral-800 font-mono text-xs overflow-x-auto shadow-inner">
                         <pre className="leading-relaxed whitespace-pre font-mono text-[11px] sm:text-xs">
@@ -217,7 +218,7 @@ export const ProjectsView: React.FC = () => {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-mono font-bold uppercase text-neutral-700 dark:text-neutral-300">
-                        Implementation & Validation Checklist ({completedChecklist}/{totalChecklist})
+                        {t.productionChecklist} ({completedChecklist}/{totalChecklist})
                       </span>
                       <span className="text-xs font-mono text-neutral-400">
                         Click tasks to check off as you build

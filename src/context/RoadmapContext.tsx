@@ -5,11 +5,13 @@ import {
   ItemStatus,
   MasteryLevel,
   RoadmapItem,
-  TechMasteryProgress
+  TechMasteryProgress,
+  Language
 } from '../types';
 import { ROADMAP_PHASES } from '../data/roadmapData';
 import { PRODUCTION_PROJECTS } from '../data/projectsData';
 import { storageRepository } from '../repositories/storageRepository';
+import { translations } from '../i18n/translations';
 
 export type TabId =
   | 'roadmap'
@@ -55,8 +57,12 @@ interface RoadmapContextType {
   addStudyMinutes: (mins: number) => void;
   saveDailyNotes: (notes: string) => void;
 
-  // Global Settings & Themes
+  // Global Settings, Themes & Language
+  language: Language;
+  t: typeof translations.en;
   toggleTheme: () => void;
+  setLanguage: (lang: Language) => void;
+  toggleLanguage: () => void;
   toggleAiFreeMode: () => void;
   exportData: () => string;
   importData: (json: string) => boolean;
@@ -500,12 +506,28 @@ export const RoadmapProvider: React.FC<{ children: React.ReactNode }> = ({ child
     addToast('Daily study log saved');
   }, [addToast]);
 
-  // Theme and AI-free mode
+  // Theme and language
   const toggleTheme = useCallback(() => {
     setState(prev => {
       const nextTheme = prev.theme === 'dark' ? 'light' : 'dark';
       addToast(`Theme switched to ${nextTheme} mode`);
       return { ...prev, theme: nextTheme };
+    });
+  }, [addToast]);
+
+  const language: Language = state.language || 'en';
+  const t = useMemo(() => translations[language] || translations.en, [language]);
+
+  const setLanguage = useCallback((lang: Language) => {
+    setState(prev => ({ ...prev, language: lang }));
+    addToast(lang === 'bn' ? 'ভাষা বাংলায় পরিবর্তন করা হয়েছে' : 'Language switched to English');
+  }, [addToast]);
+
+  const toggleLanguage = useCallback(() => {
+    setState(prev => {
+      const nextLang: Language = prev.language === 'bn' ? 'en' : 'bn';
+      addToast(nextLang === 'bn' ? 'ভাষা বাংলায় পরিবর্তন করা হয়েছে' : 'Language switched to English');
+      return { ...prev, language: nextLang };
     });
   }, [addToast]);
 
@@ -536,7 +558,7 @@ export const RoadmapProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const resetAllProgress = useCallback(() => {
     const cleared = storageRepository.resetAll();
     setState(cleared);
-    addToast('All progress has been reset.');
+    addToast('All progress has been reset to 0%.');
   }, [addToast]);
 
   // Keyboard shortcut for search modal
@@ -579,7 +601,11 @@ export const RoadmapProvider: React.FC<{ children: React.ReactNode }> = ({ child
         resetTimer,
         addStudyMinutes,
         saveDailyNotes,
+        language,
+        t,
         toggleTheme,
+        setLanguage,
+        toggleLanguage,
         toggleAiFreeMode,
         exportData,
         importData,
