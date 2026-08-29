@@ -5,8 +5,7 @@ import {
   FolderGit2,
   Sun,
   Moon,
-  Binary,
-  Languages
+  Binary
 } from 'lucide-react';
 import { ProgressBar } from '../ui/ProgressBar';
 
@@ -16,8 +15,6 @@ export const Navbar: React.FC = () => {
     setActiveTab,
     state,
     toggleTheme,
-    language,
-    toggleLanguage,
     t,
     overallProgressPercent,
     completedItemsCount,
@@ -90,7 +87,7 @@ export const Navbar: React.FC = () => {
             </nav>
           </div>
 
-          {/* Right: Progress Indicator, Language Switcher & Theme Toggle */}
+          {/* Right: Progress Indicator & Theme Toggle */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Overall Progress Widget */}
             <div className="flex items-center gap-3 px-3 py-1.5 rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
@@ -102,17 +99,6 @@ export const Navbar: React.FC = () => {
                 <ProgressBar percent={overallProgressPercent} height="xs" />
               </div>
             </div>
-
-            {/* Language Switcher (EN / বাংলা) */}
-            <button
-              onClick={toggleLanguage}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 text-xs font-mono text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-              title={language === 'en' ? t.switchLangToBn : t.switchLangToEn}
-              aria-label="Toggle language"
-            >
-              <Languages className="w-3.5 h-3.5" />
-              <span className="font-semibold text-[11px]">{language === 'en' ? 'বাংলা' : 'EN'}</span>
-            </button>
 
             {/* Theme Toggle (Sun / Moon) */}
             <button

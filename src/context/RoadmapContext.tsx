@@ -5,8 +5,7 @@ import {
   ItemStatus,
   MasteryLevel,
   RoadmapItem,
-  TechMasteryProgress,
-  Language
+  TechMasteryProgress
 } from '../types';
 import { ROADMAP_PHASES } from '../data/roadmapData';
 import { PRODUCTION_PROJECTS } from '../data/projectsData';
@@ -57,12 +56,9 @@ interface RoadmapContextType {
   addStudyMinutes: (mins: number) => void;
   saveDailyNotes: (notes: string) => void;
 
-  // Global Settings, Themes & Language
-  language: Language;
+  // Global Settings & Theme
   t: typeof translations.en;
   toggleTheme: () => void;
-  setLanguage: (lang: Language) => void;
-  toggleLanguage: () => void;
   toggleAiFreeMode: () => void;
   exportData: () => string;
   importData: (json: string) => boolean;
@@ -506,7 +502,7 @@ export const RoadmapProvider: React.FC<{ children: React.ReactNode }> = ({ child
     addToast('Daily study log saved');
   }, [addToast]);
 
-  // Theme and language
+  // Theme
   const toggleTheme = useCallback(() => {
     setState(prev => {
       const nextTheme = prev.theme === 'dark' ? 'light' : 'dark';
@@ -515,21 +511,7 @@ export const RoadmapProvider: React.FC<{ children: React.ReactNode }> = ({ child
     });
   }, [addToast]);
 
-  const language: Language = state.language || 'en';
-  const t = useMemo(() => translations[language] || translations.en, [language]);
-
-  const setLanguage = useCallback((lang: Language) => {
-    setState(prev => ({ ...prev, language: lang }));
-    addToast(lang === 'bn' ? 'ভাষা বাংলায় পরিবর্তন করা হয়েছে' : 'Language switched to English');
-  }, [addToast]);
-
-  const toggleLanguage = useCallback(() => {
-    setState(prev => {
-      const nextLang: Language = prev.language === 'bn' ? 'en' : 'bn';
-      addToast(nextLang === 'bn' ? 'ভাষা বাংলায় পরিবর্তন করা হয়েছে' : 'Language switched to English');
-      return { ...prev, language: nextLang };
-    });
-  }, [addToast]);
+  const t = translations.en;
 
   const toggleAiFreeMode = useCallback(() => {
     setState(prev => {
@@ -601,11 +583,8 @@ export const RoadmapProvider: React.FC<{ children: React.ReactNode }> = ({ child
         resetTimer,
         addStudyMinutes,
         saveDailyNotes,
-        language,
         t,
         toggleTheme,
-        setLanguage,
-        toggleLanguage,
         toggleAiFreeMode,
         exportData,
         importData,

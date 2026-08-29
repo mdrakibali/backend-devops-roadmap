@@ -127,8 +127,6 @@ export interface DailyStudySession {
   notes: string;
 }
 
-export type Language = 'en' | 'bn';
-
 export interface AppStateData {
   version: string;
   items: Record<string, ItemProgress>;
@@ -140,7 +138,6 @@ export interface AppStateData {
   isTimerRunning: boolean;
   aiFreeModeActive: boolean;
   theme: 'light' | 'dark';
-  language: Language;
   lastActiveTab: string;
 }
 
